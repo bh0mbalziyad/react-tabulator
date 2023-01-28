@@ -52,7 +52,7 @@ export default class extends React.Component<IProps, Partial<IState>> {
   }
 
   componentWillUnmount() {
-    this.table.destroy();
+    this.table && this.table.destroy();
   }
 
   // React 16.5.x - "getDerivedStateFromProps" replaces both "componentWillMount" & "componentWillReceiveProps"
@@ -90,11 +90,12 @@ export default class extends React.Component<IProps, Partial<IState>> {
     // props data changed! (see: getDerivedStateFromProps)
     if (!isSameArray(prevState.data, this.state.data)) {
       // only when data is really different: call this.table.setData (will re-render table)
-      this.table.setData(this.state.data);
+
+      this.table && this.table.setData(this.state.data);
     }
     if (!isSameArray(prevState.columns, this.state.columns)) {
       // only when data is really different: call this.table.setData (will re-render table)
-      this.table.setColumns(this.state.columns);
+      this.table && this.table.setColumns(this.state.columns);
     }
   }
 
@@ -110,6 +111,8 @@ export default class extends React.Component<IProps, Partial<IState>> {
   render() {
     this.pickValidHTMLProps();
     const { className } = this.props;
-    return <div ref={ref => (this.ref = ref)} data-instance={this.mainId} {...this.htmlProps} className={className} />;
+    return (
+      <div ref={(ref) => (this.ref = ref)} data-instance={this.mainId} {...this.htmlProps} className={className} />
+    );
   }
 }
